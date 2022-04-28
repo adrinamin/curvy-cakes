@@ -1,9 +1,50 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+@using CurvyCakes.Presentation.Data
+@inject IAccountService AccountService
 
-<h1>Hello, world!</h1>
+<PageTitle>Curvy Cakes</PageTitle>
 
-Welcome to your new app.
+<ul>
+    @foreach (var account in accounts)
+    {
+        <li>
+            <MudCard Class="mt-4">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Color="Color.Primary" Typo="Typo.h5">@account.Name</MudText>
+                        <MudText Color="Color.Secondary" Typo="Typo.h3" GutterBottom="true">@account.Amount</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Filled.ArrowForward" Color="Color.Default" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Color="Color.Tertiary">Bank: @account.Bank</MudText>
+                </MudCardContent>
+            </MudCard>
+        </li>
+    }
+</ul>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<MudPaper Class="my-8 pa-4">
+    <MudText Color="Color.Secondary" Typo="Typo.h3">@overallCash</MudText>
+    <MudChart ChartType="ChartType.Pie" InputData="@data" @bind-SelectedIndex="startIndex" InputLabels="@labels" Width="300px" Height="300px"/>
+</MudPaper>
+
+@code
+{
+    private int startIndex = -1;
+    private IList<AccountDto> accounts = new List<AccountDto>();
+    private double[] data = { };
+    private string[] labels = { };
+    private double overallCash = 0.0d;
+
+    protected override void OnInitialized()
+    {
+        this.accounts = this.AccountService.GetAccounts();
+        this.data = this.accounts.Select(a => a.Amount).ToArray();
+        this.labels = this.accounts.Select(a => a.Name).ToArray();
+        overallCash = this.data.Sum();
+    }
+}
