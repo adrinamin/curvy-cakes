@@ -1,0 +1,84 @@
+﻿@page "/account/{Id:guid}"
+@using CurvyCakes.Presentation.Data
+
+@inject IAccountService AccountService
+
+<MudAlert Class="@alertVisibility" Severity="Severity.Error">Account information could not be found</MudAlert>
+<MudText Class="ma-4" Color="Color.Primary" Typo="Typo.h4">@AccountDto?.Name</MudText>
+<MudText Class="ma-4" Color="Color.Secondary" Typo="Typo.h5">Transactions</MudText>
+<MudSimpleTable Hover="true" FixedHeader="@FixedHeader" Style="@(FixedHeader?"height:300px;":"")">
+    <thead>
+    <tr>
+        @foreach (var heading in entryHeaders)
+        {
+            <th>@heading</th>
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var entry in this.entries)
+    {
+        <tr>
+            <td>@entry.Type</td>
+            <td>@entry.Amount</td>
+            <td>@entry.Budget.Name</td>
+        </tr>
+    }
+    </tbody>
+</MudSimpleTable>
+<MudGrid Class="mt-8 pa-4" Spacing="4" Justify="Justify.Center">
+    @foreach (var budget in this.budgets)
+    {
+        <MudItem xs="12" sm="4">
+            <MudCard Class="pa-4 mud-theme-dark">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Color="Color.Primary">@budget.Name</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Filled.ArrowForward" Color="Color.Default" Href="@($"/budget/{budget.Id}")"/>
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Color="Color.Secondary">@budget.Amount</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>
+
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+    
+    private AccountDto? AccountDto { get; set; }
+
+    private IList<EntryDto> entries = new List<EntryDto>();
+    private IList<BudgetDto> budgets = new List<BudgetDto>();
+    private string alertVisibility = "d-none";
+    private readonly string[] entryHeaders = { "Type", "Amount", "Budget"};
+    private const bool FixedHeader = true;
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            this.AccountDto = this.AccountService.GetAccountsById(Id);
+            if (AccountDto == null)
+            {
+                alertVisibility = "d-block";
+                return;
+            }
+
+            this.entries = this.AccountDto.Entries;
+            this.budgets = this.AccountDto.Budgets;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            alertVisibility = "d-block";
+        }
+    }
+
+}

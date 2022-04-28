@@ -17,4 +17,12 @@
     <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Budget.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Budget.razor" />
+  </ItemGroup>
+
 </Project>

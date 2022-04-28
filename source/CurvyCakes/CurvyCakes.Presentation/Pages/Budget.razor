@@ -1,0 +1,63 @@
+﻿@page "/budget/{Id:guid}"
+@using CurvyCakes.Presentation.Data
+
+@inject IBudgetService BudgetService
+
+<MudAlert Class="@alertVisibility" Severity="Severity.Error">Account information could not be found</MudAlert>
+
+<MudText Class="ma-4" Color="Color.Primary" Typo="Typo.h4">@budgetDto?.Name</MudText>
+<MudText Class="ma-4" Color="Color.Secondary" Typo="Typo.h5">Transactions</MudText>
+<MudSimpleTable Hover="true" FixedHeader="@FixedHeader" Style="@(FixedHeader?"height:300px;":"")">
+    <thead>
+    <tr>
+        @foreach (var heading in entryHeaders)
+        {
+            <th>@heading</th>
+        }
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var entry in this.entries)
+    {
+        <tr>
+            <td>@entry.Type</td>
+            <td>@entry.Amount</td>
+        </tr>
+    }
+    </tbody>
+</MudSimpleTable>
+
+@code {
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private BudgetDto? budgetDto;
+    private IList<EntryDto> entries = new List<EntryDto>();
+    private string alertVisibility = "d-none";
+    private readonly string[] entryHeaders = { "Type", "Amount"};
+    private const bool FixedHeader = true;
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            this.budgetDto = this.BudgetService.GetBudgetById(Id);
+
+            if (budgetDto == null)
+            {
+                alertVisibility = "d-block";
+                return;
+            }
+
+            this.entries = this.budgetDto.Entries;
+
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+            alertVisibility = "d-block";
+        }
+    }
+
+}

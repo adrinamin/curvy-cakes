@@ -16,7 +16,7 @@
                         <MudText Color="Color.Secondary" Typo="Typo.h3" GutterBottom="true">@account.Amount</MudText>
                     </CardHeaderContent>
                     <CardHeaderActions>
-                        <MudIconButton Icon="@Icons.Filled.ArrowForward" Color="Color.Default" />
+                        <MudIconButton Icon="@Icons.Filled.ArrowForward" Color="Color.Default" Href="@($"/account/{account.Id}")" />
                     </CardHeaderActions>
                 </MudCardHeader>
                 <MudCardContent>
