@@ -3,6 +3,7 @@
 
 @inject IAccountService AccountService
 
+<MudButton Class="my-4" ButtonType="ButtonType.Button" Color="Color.Error" StartIcon="@Icons.Filled.ArrowBackIos" Href="/"></MudButton>
 <MudAlert Class="@alertVisibility" Severity="Severity.Error">Account information could not be found</MudAlert>
 <MudText Class="ma-4" Color="Color.Primary" Typo="Typo.h4">@AccountDto?.Name</MudText>
 <MudText Class="ma-4" Color="Color.Secondary" Typo="Typo.h5">Transactions</MudText>

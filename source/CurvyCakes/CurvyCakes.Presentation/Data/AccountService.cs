@@ -30,6 +30,16 @@ public class AccountService : IAccountService
     {
         ArgumentNullException.ThrowIfNull(id);
         var accountDto = this.GetById(id);
-        this.curvyCakesFakeDb.Accounts.Remove(accountDto);
+        var isRemoved = this.curvyCakesFakeDb.Accounts.Remove(accountDto);
+        if (!isRemoved)
+        {
+            throw new InvalidOperationException($"Could not remove Item {accountDto.Name}");
+        }
+    }
+
+    public void Update(AccountDto account)
+    {
+        this.DeleteById(account.Id);
+        this.Add(account);
     }
 }

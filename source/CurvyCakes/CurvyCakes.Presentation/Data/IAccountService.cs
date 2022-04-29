@@ -6,4 +6,5 @@ public interface IAccountService
     AccountDto GetById(Guid id);
     void Add(AccountDto account);
     void DeleteById(Guid id);
+    void Update(AccountDto account);
 }

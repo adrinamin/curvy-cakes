@@ -18,6 +18,7 @@
                         <MudText Color="Color.Secondary" Typo="Typo.h3" GutterBottom="true">@account.Amount</MudText>
                     </CardHeaderContent>
                     <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Default" Href="@($"/edit-account/{account.Id}")"/>
                         <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Default" OnClick="@OpenOverlay"/>
                         <MudOverlay @bind-Visible="isVisible" DarkBackground="true">
                             <MudPaper Elevation="0" Class="pa-4">
