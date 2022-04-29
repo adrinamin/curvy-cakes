@@ -1,15 +1,27 @@
-﻿namespace CurvyCakes.Presentation.Data;
+﻿using System.ComponentModel.DataAnnotations;
 
-public record AccountDto(Guid Id, string Name, double Amount, string Bank, IList<EntryDto> Entries, IList<BudgetDto> Budgets)
+namespace CurvyCakes.Presentation.Data;
+
+public class AccountDto
 {
-    public static AccountDto CreateDefault()
+    public AccountDto()
     {
-        return new(
-            Guid.NewGuid(),
-            "My Account",
-            100.0d,
-            "Credit Suisse",
-            new List<EntryDto>(),
-            new List<BudgetDto>());
+        Id = Guid.NewGuid();
+        Name = string.Empty;
+        Amount = 0.0d;
+        Bank = string.Empty;
+        Entries = new List<EntryDto>();
+        Budgets = new List<BudgetDto>();
     }
+
+    public Guid Id { get; set; }
+    [Required]
+    [StringLength(255, MinimumLength = 2, ErrorMessage = "Give the account a proper name.")]
+    public string Name { get; set; }
+    public double Amount { get; set; }
+    [Required]
+    [StringLength(255, MinimumLength = 2, ErrorMessage = "The account must belong to a bank")]
+    public string Bank { get; set; }
+    public IList<EntryDto> Entries { get; set; }
+    public IList<BudgetDto> Budgets { get; set; }
 }

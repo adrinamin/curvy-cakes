@@ -2,16 +2,16 @@
 
 <PageTitle>Curvy Cakes</PageTitle>
 
-<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" @ref="@_mudThemeProvider"/>
+<MudThemeProvider @bind-IsDarkMode="@isDarkMode" Theme="theme" @ref="@mudThemeProvider"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
 <MudLayout>
     <MudAppBar Color="Color.Default">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(_ => DrawerToggle())" />
         <MudText Typo="Typo.h5">Curvy Cakes</MudText>
         <MudSpacer />
-        <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool"/>
+        <MudSwitch @bind-Checked="@isDarkMode" Color="Color.Primary" Class="ma-4" T="bool"/>
     </MudAppBar>
     <MudDrawer @bind-Open="@drawerOpen">
         <NavMenu/>
@@ -25,15 +25,16 @@
 
 @code {
     bool drawerOpen;
-    private MudTheme _theme = new();
-    private bool _isDarkMode;
-    private MudThemeProvider _mudThemeProvider;
+    private readonly MudTheme theme = new();
+    private bool isDarkMode;
+    private MudThemeProvider? mudThemeProvider;
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            ArgumentNullException.ThrowIfNull(mudThemeProvider);
+            isDarkMode = await mudThemeProvider.GetSystemPreference();
             StateHasChanged();
         }
     }

@@ -9,14 +9,27 @@ public class AccountService : IAccountService
         this.curvyCakesFakeDb = curvyCakesFakeDb;
     }
 
-    public IList<AccountDto> GetAccounts()
+    public IList<AccountDto> GetAll()
     {
         return this.curvyCakesFakeDb.Accounts;
     }
 
-    public AccountDto GetAccountsById(Guid id)
+    public AccountDto GetById(Guid id)
     {
         ArgumentNullException.ThrowIfNull(id);
         return this.curvyCakesFakeDb.Accounts.Single(a => a.Id == id);
+    }
+
+    public void Add(AccountDto account)
+    {
+        ArgumentNullException.ThrowIfNull(account);
+        this.curvyCakesFakeDb.Accounts.Add(account);
+    }
+
+    public void DeleteById(Guid id)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        var accountDto = this.GetById(id);
+        this.curvyCakesFakeDb.Accounts.Remove(accountDto);
     }
 }

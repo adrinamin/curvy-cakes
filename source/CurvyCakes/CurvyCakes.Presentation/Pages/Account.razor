@@ -64,7 +64,7 @@
     {
         try
         {
-            this.AccountDto = this.AccountService.GetAccountsById(Id);
+            this.AccountDto = this.AccountService.GetById(Id);
             if (AccountDto == null)
             {
                 alertVisibility = "d-block";

@@ -7,9 +7,41 @@ public class CurvyCakesFakeDb
         var entriesAcc1 = new List<EntryDto>();
         var budgetsAcc1 = new List<BudgetDto>();
 
-        var account1 = new AccountDto(Guid.NewGuid(), "Main Account", 1500.0, "Credit Suisse", entriesAcc1, budgetsAcc1);
-        var account2 = new AccountDto(Guid.NewGuid(), "Vacation Account", 500.0, "Revolut", new List<EntryDto>(), new List<BudgetDto>());
-        var account3 = new AccountDto(Guid.NewGuid(), "Savings Account", 2500.0, "N26", new List<EntryDto>(), new List<BudgetDto>());
+        var account1 = new AccountDto
+        {
+            Id = Guid.NewGuid(),
+            Name = "Main Account",
+            Amount = 1500.0,
+            Bank = "Credit Suisse",
+            Budgets = budgetsAcc1,
+            Entries = entriesAcc1,
+
+
+        };
+
+        var account2 = new AccountDto
+        {
+            Id = Guid.NewGuid(),
+            Name = "Vacation Account",
+            Amount = 500.0,
+            Bank = "Revolut",
+            Budgets = budgetsAcc1,
+            Entries = entriesAcc1,
+
+
+        };
+
+        var account3 = new AccountDto
+        {
+            Id = Guid.NewGuid(),
+            Name = "Savings Account",
+            Amount = 2500.0,
+            Bank = "N26",
+            Budgets = budgetsAcc1,
+            Entries = entriesAcc1,
+
+
+        };
         this.Accounts = new List<AccountDto>
         {
             account1,

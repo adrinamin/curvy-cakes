@@ -2,7 +2,8 @@
 
 public interface IAccountService
 {
-    IList<AccountDto> GetAccounts();
-
-    AccountDto GetAccountsById(Guid id);
+    IList<AccountDto> GetAll();
+    AccountDto GetById(Guid id);
+    void Add(AccountDto account);
+    void DeleteById(Guid id);
 }

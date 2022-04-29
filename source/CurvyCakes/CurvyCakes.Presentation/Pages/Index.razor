@@ -5,6 +5,8 @@
 
 <PageTitle>Curvy Cakes</PageTitle>
 
+<MudAlert Class="@alertVisibility" Severity="Severity.Error">Account information could not be found</MudAlert>
+
 <ul>
     @foreach (var account in accounts)
     {
@@ -16,7 +18,17 @@
                         <MudText Color="Color.Secondary" Typo="Typo.h3" GutterBottom="true">@account.Amount</MudText>
                     </CardHeaderContent>
                     <CardHeaderActions>
-                        <MudIconButton Icon="@Icons.Filled.ArrowForward" Color="Color.Default" Href="@($"/account/{account.Id}")" />
+                        <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Default" OnClick="@OpenOverlay"/>
+                        <MudOverlay @bind-Visible="isVisible" DarkBackground="true">
+                            <MudPaper Elevation="0" Class="pa-4">
+                                <MudText Typo="Typo.body1">Are you sure you want to delete this account?</MudText>
+                                <div style="margin-top: 1rem">
+                                    <MudButton Class="mr-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => DeleteAccount(account.Id))">Yes</MudButton>
+                                    <MudButton ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Error" OnClick="@CloseOverlay">Cancel</MudButton>
+                                </div>
+                            </MudPaper>
+                        </MudOverlay>
+                        <MudIconButton Icon="@Icons.Filled.Info" Color="Color.Default" Href="@($"/account/{account.Id}")" />
                     </CardHeaderActions>
                 </MudCardHeader>
                 <MudCardContent>
@@ -32,6 +44,8 @@
     <MudChart ChartType="ChartType.Pie" InputData="@data" @bind-SelectedIndex="startIndex" InputLabels="@labels" Width="300px" Height="300px"/>
 </MudPaper>
 
+<MudFab Style="position: fixed; right: 1rem; bottom: 1rem;" ButtonType="ButtonType.Button" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Href="/add-account"/>
+
 @code
 {
     private int startIndex = -1;
@@ -39,12 +53,42 @@
     private double[] data = { };
     private string[] labels = { };
     private double overallCash = 0.0d;
+    private bool isVisible;
+    private string alertVisibility = "d-none";
 
     protected override void OnInitialized()
     {
-        this.accounts = this.AccountService.GetAccounts();
+        this.accounts = this.AccountService.GetAll();
         this.data = this.accounts.Select(a => a.Amount).ToArray();
         this.labels = this.accounts.Select(a => a.Name).ToArray();
         overallCash = this.data.Sum();
+    }
+
+    private void DeleteAccount(Guid id)
+    {
+        try
+        {
+            this.AccountService.DeleteById(id);
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+            alertVisibility = "d-block";
+        }
+
+        this.CloseOverlay();
+    }
+
+    
+    private void OpenOverlay()
+    {
+        isVisible = true;
+        StateHasChanged();
+    }
+
+    private void CloseOverlay()
+    {
+        isVisible = false;
+        StateHasChanged();
     }
 }

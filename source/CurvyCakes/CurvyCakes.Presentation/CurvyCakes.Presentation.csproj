@@ -18,7 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\AddAccount.razor" />
     <_ContentIncludedByDefault Remove="Pages\Budget.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\AddAccount.razor" />
   </ItemGroup>
 
 </Project>

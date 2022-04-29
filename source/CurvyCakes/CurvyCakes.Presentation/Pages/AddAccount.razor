@@ -1,0 +1,56 @@
+﻿@page "/add-account"
+@using CurvyCakes.Presentation.Data
+
+@inject NavigationManager NavigationManager
+@inject IAccountService AccountService
+
+<MudAlert Class="@alertVisibility" Severity="Severity.Error">Account information could not be stored</MudAlert>
+
+<MudText Class="my-4" Color="Color.Primary" Typo="Typo.h4">Add new Account</MudText>
+<EditForm Model="@account" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <MudTextField T="string" 
+                  Label="Name" 
+                  Required="true"
+                  HelperText="Min 2 characters"
+                  @bind-Value="account.Name" For="@(() => account.Name)"/>
+    <MudTextField T="double" 
+                  Label="Amount" 
+                  Required="true"
+                  @bind-Value="account.Amount"/>
+    <MudTextField T="string" 
+                  Label="Bank" 
+                  Required="true"
+                  HelperText="Min 2 characters"
+                  @bind-Value="account.Bank" For="@(() => account.Bank)"/>
+    <MudButton Class="my-4" 
+               ButtonType="ButtonType.Submit" 
+               Variant="Variant.Filled" 
+               Color="Color.Primary">Add Account</MudButton>
+</EditForm>
+
+
+
+@*<MudButton ButtonType="ButtonType.Button" Color="Color.Error" StartIcon="@Icons.Filled.ArrowBack" Href="/"></MudButton>*@
+
+@code {
+    private readonly AccountDto account = new AccountDto();
+    private string alertVisibility = "d-none";
+
+    private void OnValidSubmit()
+    {
+        try
+        {
+            this.AccountService.Add(account);
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+            alertVisibility = "d-block";
+        }
+
+        StateHasChanged();
+    }
+}
