@@ -49,21 +49,21 @@ public class CurvyCakesFakeDb
             account3
         };
 
-        
+
         var budgetDto = new BudgetDto(Guid.NewGuid(), "Food", 500.0, account1, entriesAcc1);
         var budgetDto2 = new BudgetDto(Guid.NewGuid(), "Going Out", 200.0, account1, entriesAcc1);
-        var budgetDto3 = new BudgetDto(Guid.NewGuid(), "Random", 300.0, account1, entriesAcc1);
-        var budgetDto4 = new BudgetDto(Guid.NewGuid(), "Random2", 300.0, account1, entriesAcc1);
-        var budgetDto5 = new BudgetDto(Guid.NewGuid(), "Random3", 300.0, account1, entriesAcc1);
-        var budgetDto6 = new BudgetDto(Guid.NewGuid(), "Random4", 300.0, account1, entriesAcc1);
-        var budgetDto7 = new BudgetDto(Guid.NewGuid(), "Random5", 300.0, account1, entriesAcc1);
+        //var budgetDto3 = new BudgetDto(Guid.NewGuid(), "Random", 300.0, account1, entriesAcc1);
+        //var budgetDto4 = new BudgetDto(Guid.NewGuid(), "Random2", 300.0, account1, entriesAcc1);
+        //var budgetDto5 = new BudgetDto(Guid.NewGuid(), "Random3", 300.0, account1, entriesAcc1);
+        //var budgetDto6 = new BudgetDto(Guid.NewGuid(), "Random4", 300.0, account1, entriesAcc1);
+        //var budgetDto7 = new BudgetDto(Guid.NewGuid(), "Random5", 300.0, account1, entriesAcc1);
         budgetsAcc1.Add(budgetDto);
         budgetsAcc1.Add(budgetDto2);
-        budgetsAcc1.Add(budgetDto3);
-        budgetsAcc1.Add(budgetDto4);
-        budgetsAcc1.Add(budgetDto5);
-        budgetsAcc1.Add(budgetDto6);
-        budgetsAcc1.Add(budgetDto7);
+        //budgetsAcc1.Add(budgetDto3);
+        //budgetsAcc1.Add(budgetDto4);
+        //budgetsAcc1.Add(budgetDto5);
+        //budgetsAcc1.Add(budgetDto6);
+        //budgetsAcc1.Add(budgetDto7);
 
         var entryDto1 = new EntryDto(Guid.NewGuid(), EntryType.Expense, 15.0, account1, budgetDto);
         var entryDto2 = new EntryDto(Guid.NewGuid(), EntryType.Expense, 35.0, account1, budgetDto);
@@ -84,4 +84,13 @@ public class CurvyCakesFakeDb
     public List<BudgetDto> Budgets { get; }
 
     public List<EntryDto> Entrys { get; }
+
+    public void UpdateDatabase()
+    {
+        foreach (var account in Accounts)
+        {
+            account.Budgets = Budgets;
+            account.Entries = Entrys;
+        }
+    }
 }

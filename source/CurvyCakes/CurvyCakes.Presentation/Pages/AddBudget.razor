@@ -1,0 +1,43 @@
+﻿@page "/add-budget/{AccountId:guid}"
+@using CurvyCakes.Presentation.Data
+
+@inherits ComponentBase
+
+@inject NavigationManager NavigationManager
+@inject IBudgetService BudgetService
+@inject IAccountService AccountService
+
+<MudButton 
+    Class="my-4" 
+    ButtonType="ButtonType.Button" 
+    Color="Color.Error" 
+    StartIcon="@Icons.Filled.ArrowBackIos" 
+    Href=@($"/account/{account.Id}")></MudButton>
+<MudAlert 
+    Class="@alertVisibility" 
+    Severity="Severity.Error">Account information could not be stored</MudAlert>
+<MudText Class="mt-4" Color="Color.Primary" Typo="Typo.h4">Add new Budget</MudText>
+
+<EditForm Model="@budget" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <MudTextField T="string" 
+                  Label="Name" 
+                  Required="true"
+                  HelperText="Min 2 characters"
+                  @bind-Value="@budget.Name" For="@(() => @budget.Name)" />
+    <MudTextField T="double" 
+                  Label="Amount" 
+                  Required="true"
+                  @bind-Value=@budget.Amount
+                  Adornment="Adornment.Start" 
+                  AdornmentIcon="@Icons.Material.Filled.AttachMoney" 
+                  AdornmentColor="Color.Warning"/>
+    <MudTextField T="string"
+                  Label=@account.Name
+                  Disabled="true"/>
+    <MudButton Class="my-4" 
+               ButtonType="ButtonType.Submit" 
+               Variant="Variant.Filled" 
+               Color="Color.Primary">Add Budget</MudButton>
+</EditForm>

@@ -14,4 +14,11 @@ public class BudgetService : IBudgetService
         ArgumentNullException.ThrowIfNull(id);
         return this.curvyCakesFakeDb.Budgets.Single(b => b.Id == id);
     }
+
+    public void Add(BudgetDto budget)
+    {
+        ArgumentNullException.ThrowIfNull(budget);
+        this.curvyCakesFakeDb.Budgets.Add(budget);
+        this.curvyCakesFakeDb.UpdateDatabase();
+    }
 }
